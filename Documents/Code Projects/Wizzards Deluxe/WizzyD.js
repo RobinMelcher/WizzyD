@@ -36,7 +36,16 @@ const getCursorPosition = (canvas, event, wizard) => {
     })
 }
     
-    
+
+function createHeart(ghost, heartArray){
+
+    heartArray.push({
+        x: ghost.x,
+        y: ghost.y,
+        heartExist: true,
+        sprite: heartSprite,
+    })
+}  
 
     
 
@@ -49,7 +58,7 @@ var wizard = {
     y: 286,
     dirx: 0,
     diry: 0,
-    speed: 1,
+    speed: 10,
     wizardAlive: true,
     lives: 3,
     sprite: document.getElementById("wizzyPic"),
@@ -122,6 +131,13 @@ function getGoblinxy(){
 
 }
 
+function drop(ghost, heartArray){
+    createHeart(ghost,heartArray);
+    
+}
+
+
+
 function main(){ 
 
     var canvas = document.getElementById("myCanvas");
@@ -140,15 +156,49 @@ function main(){
     canvas.addEventListener('mousedown', (e) => {
         getCursorPosition(canvas, e, wizard)
     })
+    canvas.addEventListener('keydown', (e) =>{
+        console.log(e)
+        moveWizard(canvas, e, wizard)
+    })
 
+    function moveWizard(canvas, e, wizard){
+        console.log(e.keyCode)
+        if(e.code == "KeyA") {
+            wizard.x -= wizard.speed;
+        }
+        if(e.code == "KeyD") {
+            wizard.x += wizard.speed;
+        }
+        if(e.code == "KeyW") {
+            wizard.y -= wizard.speed;
+        }
+        if(e.code == "KeyS") {
+            wizard.y += wizard.speed;
+        }
+
+    }
+    
+    heartArray = [];
     ghostArray = [];
     ballArray = [];
 
     function loop() {
 
-        
-
         if(wizard.lives > 0){
+
+            for(var heart of heartArray){
+                if(heart.heartExist){
+                    var d = Math.sqrt((wizard.x + 64 - heart.x)**2 + (wizard.y + 64 - heart.y)**2);
+            
+                    if (d < 50){
+                        heart.heartExist = false;
+                        wizard.lives += 1;
+                    }
+
+                }
+
+            }
+
             for (var ghost of ghostArray){
 
                 if(ghost.ghostAlive){
@@ -167,9 +217,13 @@ function main(){
                         var d = Math.sqrt((ball.x - ghost.x + 64 )**2 + (ball.y - ghost.y +64 )**2)
                         if(d < 64){
                             
+                            if(getRndInteger(0, 5) == 1){
+                                drop(ghost, heartArray);
+                            }
+                            
                             ghost.ghostAlive = false;
                             ghostArray.push(createGhost());
-                            if(score == 190){
+                            if(score == 190 || score == 490 || score == 1490){
                                 ghostArray.push(createGhost());
                             }
                             score += 10;
@@ -177,23 +231,24 @@ function main(){
                         
                         }
                     }
+
                 }
             }
             
             }
+
             var d = Math.sqrt((wizard.x + 64 - goblin[0])**2 + (wizard.y + 64 - goblin[1])**2);
             if (d < 2){
             wizard.lives -= 1;
-            //document.getElementById("lives").innerHTML = wizard.lives;
             goblin = getGoblinxy();
             }
+
         }else{
             alert("Game over Wizzo!");
             ghostArray = [];
+            heartArray = [];
             wizard.lives = 3;
             score = 0;
-            //document.getElementById("score").innerHTML = score;
-            //document.getElementById("lives").innerHTML = wizard.lives;
         }
 
         
@@ -208,17 +263,16 @@ function main(){
                     if(score == 190){
                         ghostArray.push(createGhost());
                     }
-                    if(score == 390){
+                    if(score == 490){
                         ghostArray.push(createGhost());
                     }
-                    if(score == 590){
+                    if(score == 990){
                         ghostArray.push(createGhost());
                     }
 
-                    
                     goblin = getGoblinxy();
                     score += 10;
-                    //document.getElementById("score").innerHTML = score;
+                    
                     
                 }
             }
@@ -227,19 +281,26 @@ function main(){
         if(score < 100){
             goblinSpeed = 1;
         }else if(score >= 100 && score < 200){
-            goblinSpeed = 2;
+            
         }else if(score >= 300 && score < 400){
-            goblinSpeed = 3;
-            ghost.speed = 2;
+            goblinSpeed = 2;
+            
         }else if(score >= 500 && score < 600){
-            goblinSpeed = 4;
-        }else if(score >= 700 && score < 800){
-            goblinSpeed = 5;
-            ghost.speed = 3;
+            goblinSpeed = 2;
+
+        }else if(score >= 1000){
+            goblinSpeed = 3;
+
         }
 
+        for(var ghost of ghostArray){
+            if(score >= 1000){
+                ghost.speed = 2;
+            }
+        }
+
+        ctx.clearRect(0, 0, 900, 700);
         
-        ctx.clearRect(0, 0, 9000, 700);
 
         for (var ball of ballArray){
             if(ball.ballExist){
@@ -258,17 +319,26 @@ function main(){
             }
         }
 
+        for (var heart of heartArray){
+            if(heart.heartExist){
+                ctx.drawImage(heartImage, heart.x, heart.y);
+            }
+        }
+
         for (let hearts = 0; hearts < wizard.lives; hearts++){
             var offset = hearts * 70;
             ctx.drawImage(heartImage, 30 + offset, 640);
 
         };
+       
 
         ctx.strokeText("score" + score, 600, 690);
         ctx.drawImage(goblin1, goblin[0] -64, goblin[1]-64);
         ctx.drawImage(wizzyPic, wizard.x, wizard.y);
         //console.log(goblin);
         window.requestAnimationFrame(loop)
+
+        
 
     }
 
