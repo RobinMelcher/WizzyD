@@ -8,6 +8,8 @@ function randomWall(){
 }
 
 var goblinSpeed = 1;
+var canvasWidth = 900;
+var canvasHeight = 700;
 
 
 const getCursorPosition = (canvas, event, wizard) => {
@@ -43,8 +45,8 @@ var heartSprite = document.getElementById("heartImage");
 
 var wizard = {
         
-    x: 436,
-    y: 336,
+    x: 386,
+    y: 286,
     dirx: 0,
     diry: 0,
     speed: 1,
@@ -101,19 +103,19 @@ function getGoblinxy(){
     wallSpawn = randomWall();
     if (wallSpawn == 1){
         x = getRndInteger(0, 10);
-        y = getRndInteger(0, 800);
+        y = getRndInteger(0, 700);
     } else 
     if (wallSpawn == 2){
-        x = getRndInteger(0, 1000);
+        x = getRndInteger(0, 900);
         y = getRndInteger(0, 10);
     } else 
     if (wallSpawn == 3){
-        x = getRndInteger(990, 1000);
-        y = getRndInteger(0, 800);
+        x = getRndInteger(890, 900);
+        y = getRndInteger(0, 700);
     } else 
     if (wallSpawn == 4){
-        x = getRndInteger(0,1000);
-        y = getRndInteger(790, 800);
+        x = getRndInteger(0,900);
+        y = getRndInteger(690, 700);
     }
     return [x, y];
     
@@ -237,7 +239,7 @@ function main(){
         }
 
         
-        ctx.clearRect(0, 0, 1000, 800);
+        ctx.clearRect(0, 0, 9000, 700);
 
         for (var ball of ballArray){
             if(ball.ballExist){
@@ -258,11 +260,11 @@ function main(){
 
         for (let hearts = 0; hearts < wizard.lives; hearts++){
             var offset = hearts * 70;
-            ctx.drawImage(heartImage, 30 + offset, 740);
+            ctx.drawImage(heartImage, 30 + offset, 640);
 
         };
 
-        ctx.strokeText("score" + score, 700, 790);
+        ctx.strokeText("score" + score, 600, 690);
         ctx.drawImage(goblin1, goblin[0] -64, goblin[1]-64);
         ctx.drawImage(wizzyPic, wizard.x, wizard.y);
         //console.log(goblin);
