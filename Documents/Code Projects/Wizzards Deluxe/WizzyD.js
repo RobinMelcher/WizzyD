@@ -217,7 +217,7 @@ function main(){
                         var d = Math.sqrt((ball.x - ghost.x + 64 )**2 + (ball.y - ghost.y +64 )**2)
                         if(d < 64){
                             
-                            if(getRndInteger(0, 5) == 1){
+                            if(getRndInteger(0, 20) == 1){
                                 drop(ghost, heartArray);
                             }
                             
