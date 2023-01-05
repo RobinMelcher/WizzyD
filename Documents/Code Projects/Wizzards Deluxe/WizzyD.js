@@ -10,11 +10,11 @@ var goblinSpeed = 1;
 var canvasWidth = 900;
 var canvasHeight = 700;
 
-const getCursorMenu(canvas, e, startBTN){
+const getCursorMenu = (canvas, event, startBTN) => {
   const rect = canvas.getBoundingClientRect();
   const x = event.clientX - rect.left;
   const y = event.clientY - rect.top;
-}
+};
 
 const getCursorPosition = (canvas, event, wizard) => {
   const rect = canvas.getBoundingClientRect();
@@ -122,7 +122,7 @@ function main() {
   var startBTN = {
     height: 128,
     width: 256,
-    x: 386,
+    x: 322,
     y: 286,
   };
 
@@ -138,14 +138,13 @@ function main() {
   var goblin = getGoblinxy();
   var score = 0;
   ctx.font = "50px Arial";
+  ctx.drawImage(startPic, startBTN.x, startBTN.y);
   ctx.drawImage(wizzyPic, wizard.x, wizard.y);
 
   canvas.addEventListener("mousedown", (e) => {
     // you want to create another if statements here to check for game state and in the menu state make a separate getcursorposition function /
     if (gameState == "menu") {
-      ctx.drawImage(startPic, startBTN.x, startBTN.y);
       getCursorMenu(canvas, e, startBTN);
-      
     }
     getCursorPosition(canvas, e, wizard);
   });
