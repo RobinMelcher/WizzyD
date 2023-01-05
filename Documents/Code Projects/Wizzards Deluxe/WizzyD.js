@@ -141,17 +141,18 @@ function main() {
 
   canvas.addEventListener("mousedown", (e) => {
     // you want to create another if statements here to check for game state and in the menu state make a separate getcursorposition function /
-    if (gameState == "menu") {
+    if (x < 322 && x > 578 && y > 286 && y < 384) {
       didClickStart(canvas, e, startBTN);
-      if((x > 322 && x < 578) && ( y < 286 && > 384) ){
-        gameState = "playing";
-      }
+      gameState = "menu";
+    } else {
+      gameState = "playing";
     }
+
     getCursorPosition(canvas, e, wizard);
-  });
-  canvas.addEventListener("keydown", (e) => {
-    console.log(e);
-    moveWizard(canvas, e, wizard);
+    canvas.addEventListener("keydown", (e) => {
+      console.log(e);
+      moveWizard(canvas, e, wizard);
+    });
   });
 
   function moveWizard(canvas, e, wizard) {
