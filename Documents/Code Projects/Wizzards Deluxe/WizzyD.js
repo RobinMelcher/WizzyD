@@ -138,8 +138,6 @@ function main() {
   var goblin = getGoblinxy();
   var score = 0;
   ctx.font = "50px Arial";
-  ctx.drawImage(startPic, startBTN.x, startBTN.y);
-  ctx.drawImage(wizzyPic, wizard.x, wizard.y);
 
   canvas.addEventListener("mousedown", (e) => {
     // you want to create another if statements here to check for game state and in the menu state make a separate getcursorposition function /
@@ -175,7 +173,7 @@ function main() {
 
   function loop() {
     if (gameState == "menu") {
-      ctx.drawImage(startPic);
+      ctx.drawImage(startPic, startBTN.x, startBTN.y);
     } else if (gameState == "playing") {
       if (wizard.lives > 0) {
         for (var heart of heartArray) {
