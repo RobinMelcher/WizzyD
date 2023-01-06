@@ -10,10 +10,10 @@ var goblinSpeed = 1;
 var canvasWidth = 900;
 var canvasHeight = 700;
 
-const didClickStart = (canvas, event, startBTN) => {
+const didClickStart = (canvas, e) => {
   const rect = canvas.getBoundingClientRect();
-  const x = event.clientX - rect.left;
-  const y = event.clientY - rect.top;
+  const x = e.clientX - rect.left;
+  const y = e.clientY - rect.top;
 };
 
 const getCursorPosition = (canvas, event, wizard) => {
@@ -141,18 +141,18 @@ function main() {
 
   canvas.addEventListener("mousedown", (e) => {
     // you want to create another if statements here to check for game state and in the menu state make a separate getcursorposition function /
-    if (x < 322 && x > 578 && y > 286 && y < 384) {
-      didClickStart(canvas, e, startBTN);
-      gameState = "menu";
-    } else {
-      gameState = "playing";
+    if (gameState == "menu") {
+      if (e.x > 322 && e.x < 578 && e.y < 286 && e.y > 384) {
+        didClickStart(canvas, e, startBTN);
+        gameState = "playing";
+      }
     }
-
     getCursorPosition(canvas, e, wizard);
-    canvas.addEventListener("keydown", (e) => {
-      console.log(e);
-      moveWizard(canvas, e, wizard);
-    });
+  });
+
+  canvas.addEventListener("keydown", (e) => {
+    console.log(e);
+    moveWizard(canvas, e, wizard);
   });
 
   function moveWizard(canvas, e, wizard) {
