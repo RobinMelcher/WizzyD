@@ -10,12 +10,6 @@ var goblinSpeed = 1;
 var canvasWidth = 900;
 var canvasHeight = 700;
 
-const didClickStart = (canvas, e) => {
-  const rect = canvas.getBoundingClientRect();
-  const x = e.clientX - rect.left;
-  const y = e.clientY - rect.top;
-};
-
 const getCursorPosition = (canvas, event, wizard) => {
   const rect = canvas.getBoundingClientRect();
   const x = event.clientX - rect.left;
@@ -142,8 +136,15 @@ function main() {
   canvas.addEventListener("mousedown", (e) => {
     // you want to create another if statements here to check for game state and in the menu state make a separate getcursorposition function /
     if (gameState == "menu") {
-      if (e.x > 322 && e.x < 578 && e.y < 286 && e.y > 384) {
-        didClickStart(canvas, e, startBTN);
+      const rect = canvas.getBoundingClientRect();
+      const x = e.clientX - rect.left;
+      const y = e.clientY - rect.top;
+      if (
+        e.x > startBTN.x &&
+        e.x < startBTN.x + startBTN.width &&
+        e.y > startBTN.y &&
+        e.y < startBTN.y + startBTN.height
+      ) {
         gameState = "playing";
       }
     }
